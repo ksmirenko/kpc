@@ -6,72 +6,53 @@ import org.objectweb.asm.MethodVisitor
 import org.objectweb.asm.Opcodes.*
 import java.util.*
 
-class BrainfuckCompiler {
+class TokenJvmCompiler {
     private val memorySize = 30000
     private val labels = Stack<Label>()
     private var isFirstLoop = true
 
-    fun generateClassByteArray(commands : String, className : String) : ByteArray {
-        val cw = ClassWriter(0);
-        //val cw = ClassWriter(ClassWriter.COMPUTE_FRAMES or ClassWriter.COMPUTE_MAXS);
+    fun generateClassByteArray(commands : Array<Token>, className : String) : ByteArray {
+        val cw = ClassWriter(0)
         cw.visit(V1_7, ACC_PUBLIC, className, null, "java/lang/Object", null)
 
-        // generating constructor method
-        /*val cmv = cw.visitMethod(ACC_PUBLIC, "<init>", "()V", null, null)
-        cmv.visitCode()
-        val lCStart = Label()
-        cmv.visitLabel(lCStart)
-        cmv.visitVarInsn(ALOAD, 0)
-        cmv.visitMethodInsn(INVOKESPECIAL, "java/lang/Object", "<init>", "()V", false)
-        cmv.visitInsn(RETURN)
-        val lCEnd = Label()
-        cmv.visitLabel(lCEnd)
-        cmv.visitLocalVariable("this", "Lhomework/hw09/SampleClass;", null, lCStart, lCEnd, 0)
-        cmv.visitMaxs(1, 1)
-        cmv.visitEnd()*/
-
-        // generating main method
+        // generate main method
         val mv = cw.visitMethod(ACC_PUBLIC or ACC_STATIC, "main", "([Ljava/lang/String;)V", null, null)
         mv.visitCode()
         val lStart = Label()
         mv.visitLabel(lStart)
-        // creating "memory" array
+        // create "memory" array
         mv.visitIntInsn(SIPUSH, memorySize)
         mv.visitIntInsn(NEWARRAY, T_CHAR)
         mv.visitIntInsn(ASTORE, 1)
-        // setting memory pointer to zero
+        // set memory pointer to zero
         mv.visitInsn(ICONST_0)
         mv.visitIntInsn(ISTORE, 2)
 
         isFirstLoop = true
         for (op in commands) {
             when (op) {
-                Tokens.NEXT.v ->
+                Token.NEXT ->
                     mv.visitPtrModifyInsn(true)
-                Tokens.PREV.v ->
+                Token.PREV ->
                     mv.visitPtrModifyInsn(false)
-                Tokens.INC.v ->
+                Token.INC ->
                     mv.visitValModifyInsn(true)
-                Tokens.DEC.v ->
+                Token.DEC ->
                     mv.visitValModifyInsn(false)
-                Tokens.WRITE.v ->
+                Token.WRITE ->
                     mv.visitWriteInsn()
-                Tokens.READ.v ->
+                Token.READ ->
                     mv.visitReadInsn()
-                Tokens.LBRACKET.v ->
+                Token.LBRACKET ->
                     mv.visitWhileInsn()
-                Tokens.RBRACKET.v ->
+                Token.RBRACKET ->
                     mv.visitEndwhileInsn()
             }
         }
-        // finalizing class
+        // finalize class
         mv.visitInsn(RETURN)
-        val lEnd = Label()
-        mv.visitLabel(lEnd)
-        /*mv.visitLocalVariable("var0", "[Ljava/lang/String;", null, lStart, lEnd, 0);
-        mv.visitLocalVariable("var1", "[C", null, lStart, lEnd, 1);
-        mv.visitLocalVariable("var2", "I", null, lStart, lEnd, 2);*/
-        mv.visitMaxs(4, 3)
+        mv.visitLabel(Label()) // end label
+        mv.visitMaxs(4, 3) // max stack and locals
         mv.visitEnd()
         cw.visitEnd()
 

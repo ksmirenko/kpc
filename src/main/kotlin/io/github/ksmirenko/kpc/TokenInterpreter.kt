@@ -11,7 +11,7 @@ class TokenInterpreter {
         val memory = Array(memorySize) { byteZero }
         var memPtr = 0
         var commPtr = 0
-        while (commPtr < tokens.length) {
+        while (commPtr < tokens.size) {
             when (tokens[commPtr]) {
                 Token.NEXT ->
                     memPtr = (memPtr + 1) % memorySize
@@ -30,8 +30,10 @@ class TokenInterpreter {
                         var leftBracketCount = 1;
                         while (leftBracketCount > 0) {
                             when (tokens[++commPtr]) {
-                                Tokens.LBRACKET.v -> leftBracketCount++
-                                Tokens.RBRACKET.v -> leftBracketCount--
+                                Token.LBRACKET -> leftBracketCount++
+                                Token.RBRACKET -> leftBracketCount--
+                                else -> { // just to avoid warnings
+                                }
                             }
                         }
                     }
@@ -40,8 +42,10 @@ class TokenInterpreter {
                         var rightBracketCount = 1;
                         while (rightBracketCount > 0) {
                             when (tokens[--commPtr]) {
-                                Tokens.RBRACKET.v -> rightBracketCount++
-                                Tokens.LBRACKET.v -> rightBracketCount--
+                                Token.RBRACKET -> rightBracketCount++
+                                Token.LBRACKET -> rightBracketCount--
+                                else -> {
+                                }
                             }
                         }
                     }
