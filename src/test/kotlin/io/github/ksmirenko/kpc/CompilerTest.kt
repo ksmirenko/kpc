@@ -6,11 +6,10 @@ import java.io.OutputStream
 import java.io.PrintStream
 import kotlin.test.assertEquals
 
-/**
- * Tests for the Brainfuck compiler.
- * @author Kirill Smirenko, group 271
- */
 class CompilerTest {
+    val parser = BrainfuckParser()
+    val compiler = TokenJvmCompiler()
+
     @Test fun testOutput() = testCompiler(
             "+++++-+++++.",
             "",
@@ -65,7 +64,7 @@ class CompilerTest {
 
     fun testCompiler(program : String, input : String, output : String) {
         val className = "TestClass"
-        val classByteArray = BrainfuckCompiler.generateClassByteArray(program, "TestClass") // TODO: fix
+        val classByteArray = compiler.generateClassByteArray(parser.parse(program), "TestClass")
 
         val out = StringPrintStream()
         System.setIn(StringInputStream(input))
@@ -93,7 +92,8 @@ class CompilerTest {
         }
     }
 
-    class StringInputStream(private val str : String) : InputStream() { // TODO: maybe combine with Readers
+    // TODO: maybe combine with Readers from InterpreterTest
+    class StringInputStream(private val str : String) : InputStream() {
         var ptr = 0
 
         override fun read() = if (ptr < str.length) str[ptr++].toInt() else -1

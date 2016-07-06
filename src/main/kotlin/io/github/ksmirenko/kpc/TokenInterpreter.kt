@@ -27,7 +27,7 @@ class TokenInterpreter {
                     memory[memPtr] = reader.read().toByte()
                 Token.LBRACKET ->
                     if (memory[memPtr] == byteZero) {
-                        var leftBracketCount = 1;
+                        var leftBracketCount = 1
                         while (leftBracketCount > 0) {
                             when (tokens[++commPtr]) {
                                 Token.LBRACKET -> leftBracketCount++
@@ -39,7 +39,7 @@ class TokenInterpreter {
                     }
                 Token.RBRACKET ->
                     if (memory[memPtr] != byteZero) {
-                        var rightBracketCount = 1;
+                        var rightBracketCount = 1
                         while (rightBracketCount > 0) {
                             when (tokens[--commPtr]) {
                                 Token.RBRACKET -> rightBracketCount++

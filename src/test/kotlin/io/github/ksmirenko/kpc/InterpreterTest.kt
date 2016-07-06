@@ -1,16 +1,10 @@
 package io.github.ksmirenko.kpc
 
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.junit.runners.Suite
 import java.io.Reader
 import java.io.Writer
 import kotlin.test.assertEquals
 
-/**
- * Tests for the Brainfuck interpreter.
- * @author Kirill Smirenko, group 271
- */
 class InterpreterTest {
     val parser = BrainfuckParser()
     val interpreter = TokenInterpreter()
