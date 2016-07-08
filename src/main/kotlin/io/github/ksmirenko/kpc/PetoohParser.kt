@@ -9,8 +9,8 @@ import java.util.ArrayList
  * "kukarek" instruction added, which reads a byte (ASCII character)
  * from the input and saves it at the data pointer.
  */
-class PetoohParser {
-    fun parse(code : String) : Array<Token> {
+class PetoohParser : IParser {
+    override fun parse(code : String) : Array<Token> {
         val tokens = ArrayList<Token>()
         var curPosition = 0
         while (curPosition < code.length) {

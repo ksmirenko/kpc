@@ -1,9 +1,6 @@
 package io.github.ksmirenko.kpc
 
 import org.junit.Test
-import java.io.InputStream
-import java.io.OutputStream
-import java.io.PrintStream
 import kotlin.test.assertEquals
 
 class TokenJvmCompilerTest {
@@ -89,28 +86,6 @@ class TokenJvmCompilerTest {
     class ByteArrayClassLoader() : ClassLoader() {
         fun loadClass(name : String?, buf : ByteArray) : Class<*>? {
             return super.defineClass(name, buf, 0, buf.size)
-        }
-    }
-
-    // TODO: maybe combine with Readers from TokenInterpreterTest
-    class StringInputStream(private val str : String) : InputStream() {
-        var ptr = 0
-
-        override fun read() = if (ptr < str.length) str[ptr++].toInt() else -1
-    }
-
-    class StringPrintStream() : PrintStream(EmptyStream()) {
-        private var sb = StringBuilder()
-
-        override fun print(c : Char) {
-            sb.append(c)
-        }
-
-        override fun toString() = sb.toString()
-    }
-
-    class EmptyStream() : OutputStream() {
-        override fun write(b : Int) {
         }
     }
 }

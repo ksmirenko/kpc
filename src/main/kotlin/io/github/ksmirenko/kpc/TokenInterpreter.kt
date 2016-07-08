@@ -1,12 +1,12 @@
 package io.github.ksmirenko.kpc
 
-import java.io.Reader
-import java.io.Writer
+import java.io.InputStream
+import java.io.PrintStream
 
 class TokenInterpreter {
     private val memorySize = 30000
 
-    fun run(tokens : Array<Token>, reader : Reader, writer : Writer) {
+    fun run(tokens : Array<Token>, reader : InputStream, writer : PrintStream) {
         val byteZero : Byte = 0
         val memory = Array(memorySize) { byteZero }
         var memPtr = 0
@@ -22,7 +22,7 @@ class TokenInterpreter {
                 Token.DEC ->
                     memory[memPtr]--
                 Token.WRITE ->
-                    writer.write(memory[memPtr].toChar().toString())
+                    writer.print(memory[memPtr].toChar())
                 Token.READ ->
                     memory[memPtr] = reader.read().toByte()
                 Token.LBRACKET ->

@@ -5,8 +5,8 @@ import java.util.ArrayList
 /**
  * Translates Brainfuck code to an array of Tokens.
  */
-class BrainfuckParser {
-    fun parse(code : String) : Array<Token> {
+class BrainfuckParser : IParser {
+    override fun parse(code : String) : Array<Token> {
         val tokens = ArrayList<Token>()
         code.forEach { c ->
             val token = when (c) {
