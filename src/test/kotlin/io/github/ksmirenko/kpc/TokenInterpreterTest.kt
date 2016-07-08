@@ -5,7 +5,7 @@ import java.io.Reader
 import java.io.Writer
 import kotlin.test.assertEquals
 
-class InterpreterTest {
+class TokenInterpreterTest {
     val parser = BrainfuckParser()
     val interpreter = TokenInterpreter()
 

@@ -6,7 +6,7 @@ import java.io.OutputStream
 import java.io.PrintStream
 import kotlin.test.assertEquals
 
-class CompilerTest {
+class TokenJvmCompilerTest {
     val parser = BrainfuckParser()
     val compiler = TokenJvmCompiler()
 
@@ -92,7 +92,7 @@ class CompilerTest {
         }
     }
 
-    // TODO: maybe combine with Readers from InterpreterTest
+    // TODO: maybe combine with Readers from TokenInterpreterTest
     class StringInputStream(private val str : String) : InputStream() {
         var ptr = 0
 
