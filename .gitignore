@@ -2,8 +2,8 @@
 annotations/
 build/
 .gradle
-!gradle-wrapper.jar
 *.jar
+!gradle-wrapper.jar
 *.iml
 .idea
 *~
